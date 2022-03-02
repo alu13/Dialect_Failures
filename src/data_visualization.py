@@ -4,6 +4,7 @@ from matplotlib import pyplot as plt
 import os
 import statistics
 from collections import Counter
+import numpy as np
 print(os.getcwd())
 def json_to_bar(path, N):
     with open(path) as json_file:
@@ -36,10 +37,29 @@ def json_stats(path):
         print(mean)
         median = statistics.median(cleaned_dic.values())
         print(median)
+def model_avg_graphs(path):
+    scores = None
+    with open(path, 'r') as f:
+        scores = json.load(f)
+    start_temp = 0.8
+    y = scores
+    x = (np.arange(len(y)) / 10) + start_temp
+    plt.plot(x, y)
+    plt.title("DialoGPT Temperature vs SS")
+    plt.ylabel("Average SS score")
+    plt.xlabel("Temperature")
+    plt.show()
+def model_distributions(path):
+    scores = None
+    with open(path, 'r') as f:
+        scores = json.load(f)
+    temp = scores[4]
+    plt.hist(temp, bins = 50)
+    plt.title("BlenderBot SS distribution, Temp = 1.2")
+    plt.ylabel("# Samples")
+    plt.xlabel("SS score")
+    plt.show()
 
 
-
-path = "../data/subreddit_counts.json"
-# json_to_bar("subreddit_counts.json", 8)
-json_stats(path)
-json_to_frequency(path)
+path = "../data/blenderbot_ss_scores.json"
+model_distributions(path)
