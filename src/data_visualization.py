@@ -53,13 +53,15 @@ def model_distributions(path):
     scores = None
     with open(path, 'r') as f:
         scores = json.load(f)
-    temp = scores[4]
-    plt.hist(temp, bins = 50)
-    plt.title("BlenderBot SS distribution, Temp = 1.2")
+    temp = scores[3]
+    for i in range(len(temp)):
+        if temp[i] < 0.2:
+            print(i)
+    plt.hist(temp, bins = 20)
+    plt.title("Dialogpt SS distribution, Temp = 0.4")
     plt.ylabel("# Samples")
     plt.xlabel("SS score")
     plt.show()
 
-
-path = "../data/blenderbot_ss_scores.json"
+path = "../data/dialogpt_ss_pairwise_avgs.json"
 model_distributions(path)
