@@ -49,19 +49,29 @@ def model_avg_graphs(path):
     plt.ylabel("Average SS score")
     plt.xlabel("Temperature")
     plt.show()
-def model_distributions(path):
+def model_distributions(path, outputs_path):
     scores = None
+    volatile = []
+    temp = 0
     with open(path, 'r') as f:
         scores = json.load(f)
-    temp = scores[3]
-    for i in range(len(temp)):
-        if temp[i] < 0.2:
+    scores = scores[temp]
+    for i in range(len(scores)):
+        if scores[i] < 0.15:
             print(i)
-    plt.hist(temp, bins = 20)
-    plt.title("Dialogpt SS distribution, Temp = 0.4")
+            volatile.append(i)
+    print(len(volatile))
+    with open(outputs_path, 'r') as output_f:
+        outputs = json.load(output_f)
+    for i in volatile:
+        print(outputs[temp][i])
+    plt.hist(scores, bins = 50)
+    plt.title("Dialogpt SS distribution, Temp = 0.3")
     plt.ylabel("# Samples")
     plt.xlabel("SS score")
     plt.show()
 
-path = "../data/dialogpt_ss_pairwise_avgs.json"
-model_distributions(path)
+path = "../data/jsons/dialogpt_ss_pairwise_avgs.json"
+outputs_path = "../data/jsons/dialogpt_pairwise_outputs.json"
+
+model_distributions(path, outputs_path)
