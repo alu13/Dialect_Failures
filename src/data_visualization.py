@@ -5,7 +5,10 @@ import os
 import statistics
 from collections import Counter
 import numpy as np
+
 print(os.getcwd())
+
+# This function converts a JSON of typically model scores to a bar chart
 def json_to_bar(path, N):
     with open(path) as json_file:
         dic = json.load(json_file)
@@ -14,6 +17,9 @@ def json_to_bar(path, N):
         values = [dic[n] for n in n_largest]
         plt.bar(keys, values)
         plt.show()
+
+# This function converts a JSON of posts + associated subreddit into
+# subreddit counts
 def json_to_frequency(path):
     with open(path) as json_file:
         dic = json.load(json_file)
@@ -27,6 +33,9 @@ def json_to_frequency(path):
         plt.ylabel("# of subreddits")
         plt.xlabel("subreddit size")
         plt.show()
+
+# This functions prints the mean/mean of a json file with keys + counts
+# This file was under on subreddit counts.
 def json_stats(path):
     with open(path) as json_file:
         dic = json.load(json_file)
@@ -37,6 +46,9 @@ def json_stats(path):
         print(mean)
         median = statistics.median(cleaned_dic.values())
         print(median)
+
+# This function plots takes in a json of temps x scores 
+# It plots the avg SS/BLEU scores vs temp
 def model_avg_graphs(path):
     scores = None
     with open(path, 'r') as f:
@@ -49,6 +61,9 @@ def model_avg_graphs(path):
     plt.ylabel("Average SS score")
     plt.xlabel("Temperature")
     plt.show()
+
+# This function takes in a json of temps x scores
+# It plots the distribution of SS/BLEU scores in a specific temperature
 def model_distributions(path, outputs_path):
     scores = None
     volatile = []
@@ -71,7 +86,8 @@ def model_distributions(path, outputs_path):
     plt.xlabel("SS score")
     plt.show()
 
-path = "../data/jsons/dialogpt_ss_pairwise_avgs.json"
-outputs_path = "../data/jsons/dialogpt_pairwise_outputs.json"
 
-model_distributions(path, outputs_path)
+if __name__ == "__main__":
+    path = "../data/jsons/dialogpt_ss_pairwise_avgs.json"
+    outputs_path = "../data/jsons/dialogpt_pairwise_outputs.json"
+    model_distributions(path, outputs_path)
